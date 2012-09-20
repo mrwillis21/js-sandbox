@@ -1,4 +1,1 @@
-sandbox
-=======
-
-A sandbox for small projects and utility code.
+This is my sandbox for small JavaScript projects and utility code.
