@@ -14,6 +14,7 @@
 
 	// TODO: Make the colors configurable.
 	// TODO: Make this instanceable.
+	// TODO: Make the text configurable (but it should only allow up to 10 characters or so).
 
 	this.Clock = {};
 
