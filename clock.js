@@ -30,12 +30,39 @@
 				ctx = canvas.getContext("2d");
 				canvas.width = width || 200; // Default to 200 width
 				canvas.height = height || canvas.width; // If a height is not specified, make it square.
-				document.body.appendChild(canvas);
+				var id = "analog-clock-" + (++AnalogClock.CLOCK_ID);
+				document.write('<div id="' + id + '"></div>');
+				document.getElementById(id).appendChild(canvas);
 				initialized = true;
 			}
 		}
 		
 		_init();
+		
+		function _drawLine(startX, startY, endX, endY, lineWidth, lineStyle) {
+			// Save old lineWidth and strokeStyle
+			var oldLW = ctx.lineWidth;
+			var oldSS = ctx.strokeStyle;
+			
+			// Draw the line
+			ctx.beginPath();
+			ctx.lineWidth = lineWidth || ctx.lineWidth;
+			ctx.strokeStyle = lineStyle || ctx.strokeStyle;
+			ctx.moveTo(startX, startY);
+			ctx.lineTo(endX, endY);
+			ctx.stroke();
+			ctx.closePath();
+			
+			// Reset lineWidth and strokeStyle
+			ctx.lineWidth = oldLW;
+			ctx.strokeStyle = oldSS;
+		}
+		
+		function _drawClockHand(centerX, centerY, handWidth, handLength, angle, handColor) {
+			var handX = centerX + Math.cos(angle) * handLength;
+			var handY = centerY + Math.sin(angle) * handLength;
+			_drawLine(centerX, centerY, handX, handY, handWidth, handColor);
+		}
 		
 		function _draw() {
 			canvas.width = canvas.width; // Reset the canvas.
@@ -98,31 +125,6 @@
 			ctx.fill();
 			ctx.closePath();
 		}
-		
-		function _drawClockHand(centerX, centerY, handWidth, handLength, angle, handColor) {
-			var handX = centerX + Math.cos(angle) * handLength;
-			var handY = centerY + Math.sin(angle) * handLength;
-			_drawLine(centerX, centerY, handX, handY, handWidth, handColor);
-		}
-
-		function _drawLine(startX, startY, endX, endY, lineWidth, lineStyle) {
-			// Save old lineWidth and strokeStyle
-			var oldLW = ctx.lineWidth;
-			var oldSS = ctx.strokeStyle;
-			
-			// Draw the line
-			ctx.beginPath();
-			ctx.lineWidth = lineWidth || ctx.lineWidth;
-			ctx.strokeStyle = lineStyle || ctx.strokeStyle;
-			ctx.moveTo(startX, startY);
-			ctx.lineTo(endX, endY);
-			ctx.stroke();
-			ctx.closePath();
-			
-			// Reset lineWidth and strokeStyle
-			ctx.lineWidth = oldLW;
-			ctx.strokeStyle = oldSS;
-		}
 
 		function _animate() {
 			_draw();
@@ -148,5 +150,7 @@
 		
 		return this;
 	}
+	
+	AnalogClock.CLOCK_ID = 0;
 	
 })();
