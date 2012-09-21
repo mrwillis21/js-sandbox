@@ -22,7 +22,7 @@
 	var canvas, ctx;
 
 	function draw() {
-		canvas.width = canvas.width;
+		canvas.width = canvas.width; // Reset the canvas.
 		var centerX = canvas.width / 2;
 		var centerY = canvas.height / 2;
 		var circleWidth = 5;
@@ -68,34 +68,25 @@
 		ctx.fillText("Willis", centerX, centerY + (clockRadius * 0.4));
 
 		// Draw the hour hand
-		var handWidth = 5;
-		var handLength = clockRadius * 0.6;
-		var angle = (fullCircle * (nowHours / 12)) - quarterCircle;
-		var handX = centerX + Math.cos(angle) * handLength;
-		var handY = centerY + Math.sin(angle) * handLength;
-		drawLine(centerX, centerY, handX, handY, handWidth);
+		drawClockHand(centerX, centerY, 5, clockRadius * 0.6, (fullCircle * (nowHours / 12)) - quarterCircle);
 
 		// Draw the minute hand
-		handWidth = 3;
-		handLength = clockRadius * 0.8;
-		angle = (fullCircle * nowMinutes) - quarterCircle;
-		handX = centerX + Math.cos(angle) * handLength;
-		handY = centerY + Math.sin(angle) * handLength;
-		drawLine(centerX, centerY, handX, handY, handWidth);
+		drawClockHand(centerX, centerY, 3, clockRadius * 0.8, (fullCircle * nowMinutes) - quarterCircle);
 
 		// Draw the second hand
-		handWidth = 1;
-		handLength = clockRadius * 0.8;
-		angle = (fullCircle * nowSeconds * 60) - quarterCircle;
-		handX = centerX + Math.cos(angle) * handLength;
-		handY = centerY + Math.sin(angle) * handLength;
-		drawLine(centerX, centerY, handX, handY, handWidth, "#FF0000"); // Draw the second hand in red. :)
+		drawClockHand(centerX, centerY, 1, clockRadius * 0.8, (fullCircle * nowSeconds * 60) - quarterCircle, "#FF0000"); // Draw the second hand in red. :)
 
 		// Draw center dot on top.
 		ctx.beginPath();
 		ctx.arc(centerX, centerY, clockRadius * 0.05, 0, fullCircle, true);
 		ctx.fill();
 		ctx.closePath();
+	}
+	
+	function drawClockHand(centerX, centerY, handWidth, handLength, angle, handColor) {
+		var handX = centerX + Math.cos(angle) * handLength;
+		var handY = centerY + Math.sin(angle) * handLength;
+		drawLine(centerX, centerY, handX, handY, handWidth, handColor);
 	}
 
 	function drawLine(startX, startY, endX, endY, lineWidth, lineStyle) {
@@ -120,7 +111,7 @@
 	function animate() {
 		draw();
 		if(running) {
-			window.setTimeout(animate, 250); // We'll never be more than (close to) a quarter-second off the system clock.
+			window.setTimeout(animate, 1000); // Tick every second.
 		}
 	}
 
