@@ -151,6 +151,6 @@
 		return this;
 	}
 	
-	AnalogClock.CLOCK_ID = 0;
+	this.AnalogClock.CLOCK_ID = 0;
 	
 })();
