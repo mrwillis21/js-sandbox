@@ -92,18 +92,32 @@
 			ctx.stroke();
 			ctx.closePath();
 
-			// Draw the numbers
+			// Draw the notches/numbers.
 			var fontSize = clockRadius * 0.2; // Base the font size on the size of the clock itself.
 			ctx.font = "bold " + fontSize + "px sans-serif";
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
 			ctx.fillStyle = "#000000";
-			for(var i = 1; i <= 12; i++) {
-				var distance = clockRadius * 0.8;
-				var angle = (fullCircle * (i / 12)) - quarterCircle;
-				var x = centerX + Math.cos(angle) * distance;
-				var y = centerY + Math.sin(angle) * distance;
-				ctx.fillText(i, x, y);
+			for(var i = 1; i <= 60; i++) {
+				var angle = (fullCircle * (i / 60)) - quarterCircle;
+				
+				var x = Math.cos(angle) * clockRadius; // X coordinate of the circle's edge at the given angle.
+				var y = Math.sin(angle) * clockRadius; // Y coordinate of the circle's edge at the given angle.
+				
+				// Draw a line from 92% of the distance to the edge out to the edge of the circle.
+				var startX = centerX + (x * 0.92);
+				var endX = centerX + x;
+				var startY = centerY + (y * 0.92);
+				var endY = centerY + y;
+				
+				var lineWidth = 1;
+				if(i % 5 == 0) {
+					lineWidth = 3;
+					var numberX = centerX + (x * 0.8);
+					var numberY = centerY + (y * 0.8);
+					ctx.fillText(i/5, numberX, numberY);
+				}
+				_drawLine(startX, startY, endX, endY, lineWidth, "#000000");
 			}
 			
 			// Draw the clock text
